@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juegos Didácticos - Signo Translate</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #D1A68B 0%, #c19a7a 25%, #b8926f 50%, #af8a64 75%, #a68259 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .back-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
+        }
+
+        .header-content {
+            flex: 1;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 0.9rem;
+        }
+
+        .lives-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .lives-container:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .lives-text {
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .heart-icon {
+            color: #e74c3c;
+            font-size: 1.3rem;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .main-container {
+            flex: 1;
+            padding: 30px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .level-selection {
+            display: block;
+            animation: fadeInUp 0.8s ease-out;
+            width: 100%;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .level-title {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 15px;
+        }
+
+        .level-subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .level-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-card:nth-child(1) { animation-delay: 0.1s; }
+        .level-card:nth-child(2) { animation-delay: 0.2s; }
+        .level-card:nth-child(3) { animation-delay: 0.3s; }
+
+        .level-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            transition: transform 0.4s ease;
+        }
+
+        .level-card.easy::before {
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+        }
+
+        .level-card.medium::before {
+            background: linear-gradient(90deg, #f39c12, #e67e22);
+        }
+
+        .level-card.hard::before {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+
+        .level-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .level-icon {
+            font-size: 4rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .level-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .level-description {
+            color: #666;
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .level-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #D1A68B;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .game-container {
+            display: none;
+            animation: fadeInUp 0.8s ease-out;
+            width: 100%;
+        }
+
+        .game-header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .game-info {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #666;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #D1A68B, #c19a7a);
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .game-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .learning-mode {
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .learning-title {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .letter-display {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 30px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .letter-display img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .letter-label {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #D1A68B;
+            margin-bottom: 20px;
+        }
+
+        .learning-text {
+            font-size: 1.3rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .continue-btn {
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #D1A68B, #c19a7a);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(209, 166, 139, 0.3);
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(209, 166, 139, 0.4);
+        }
+
+        .quiz-mode {
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .quiz-question {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .quiz-image {
+            width: 250px;
+            height: 250px;
+            margin: 0 auto 40px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .quiz-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option-btn {
+            padding: 20px;
+            background: white;
+            border: 3px solid #ddd;
+            border-radius: 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #333;
+        }
+
+        .option-btn:hover {
+            border-color: #D1A68B;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-btn.correct {
+            background: #2ecc71;
+            border-color: #27ae60;
+            color: white;
+            animation: correctAnswer 0.5s ease-out;
+        }
+
+        .option-btn.incorrect {
+            background: #e74c3c;
+            border-color: #c0392b;
+            color: white;
+            animation: shake 0.5s ease-out;
+        }
+
+        @keyframes correctAnswer {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .sequence-quiz {
+            text-align: center;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .sequence-display {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .sequence-card {
+            width: 100px;
+            height: 120px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .sequence-card img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+        }
+
+        .sequence-label {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #D1A68B, #c19a7a);
+            color: white;
+            font-weight: bold;
+        }
+
+        .word-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px 20px;
+            font-size: 1.5rem;
+            border: 3px solid #ddd;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .word-input:focus {
+            outline: none;
+            border-color: #D1A68B;
+        }
+
+        .submit-btn {
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .result-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .result-content {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        .result-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .result-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .result-message {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .result-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .result-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .result-btn.primary {
+            background: linear-gradient(45deg, #D1A68B, #c19a7a);
+            color: white;
+        }
+
+        .result-btn.secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .result-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .particle {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: float 10s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg); 
+                opacity: 0.4; 
+            }
+            50% { 
+                transform: translateY(-30px) rotate(180deg); 
+                opacity: 0.8; 
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .show {
+            display: block !important;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .level-title {
+                font-size: 2rem;
+            }
+
+            .levels-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .game-content {
+                padding: 25px;
+            }
+
+            .letter-display, .quiz-image {
+                width: 200px;
+                height: 200px;
+            }
+
+            .options-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .sequence-card {
+                width: 80px;
+                height: 100px;
+            }
+
+            .sequence-card img {
+                height: 65px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particle" style="top: 15%; left: 8%; animation-delay: 0s;"></div>
+    <div class="particle" style="top: 65%; left: 85%; animation-delay: 2s;"></div>
+    <div class="particle" style="top: 35%; left: 45%; animation-delay: 4s;"></div>
+    <div class="particle" style="top: 75%; left: 15%; animation-delay: 1s;"></div>
+    <div class="particle" style="top: 25%; left: 75%; animation-delay: 3s;"></div>
+    <div class="particle" style="top: 50%; left: 90%; animation-delay: 5s;"></div>
+
+    <header class="header">
+        <div class="header-left">
+            <a class="back-button" href="inicio.html">←</a>
+        </div>
+        <div class="header-content">
+            <h1>🎮 Juegos Didácticos</h1>
+            <p>Aprende jugando con lenguaje de señas</p>
+        </div>
+        <a href="vidas.html" class="lives-container">
+            <span class="lives-text" id="livesCount">5</span>
+            <span class="heart-icon">❤️</span>
+        </a>
+    </header>
+
+    <main class="main-container">
+        <div class="level-selection" id="levelSelection">
+            <h2 class="level-title">🎯 Selecciona tu Nivel</h2>
+            <p class="level-subtitle">Elige el nivel que mejor se adapte a tu experiencia</p>
+
+            <div class="levels-grid">
+                <div class="level-card easy" onclick="startLevel('easy')">
+                    <div class="level-icon">🌱</div>
+                    <h3 class="level-name">Nivel Fácil</h3>
+                    <p class="level-description">Perfecto para principiantes. Aprende las letras básicas del abecedario.</p>
+                    <div class="level-stats">
+                        <div class="stat">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Letras</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">Desafíos</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-card medium" onclick="startLevel('medium')">
+                    <div class="level-icon">🔥</div>
+                    <h3 class="level-name">Nivel Medio</h3>
+                    <p class="level-description">Para quienes ya conocen lo básico. Forma palabras simples.</p>
+                    <div class="level-stats">
+                        <div class="stat">
+                            <div class="stat-value">8</div>
+                            <div class="stat-label">Letras</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Desafíos</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-card hard" onclick="startLevel('hard')">
+                    <div class="level-icon">⚡</div>
+                    <h3 class="level-name">Nivel Difícil</h3>
+                    <p class="level-description">¡Desafío extremo! Palabras complejas y secuencias avanzadas.</p>
+                    <div class="level-stats">
+                        <div class="stat">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Letras</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">8</div>
+                            <div class="stat-label">Desafíos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-container" id="gameContainer">
+            <div class="game-header">
+                <div class="game-info">
+                    <div class="info-item">
+                        <span class="info-label">Nivel:</span>
+                        <span class="info-value" id="currentLevel">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Puntos:</span>
+                        <span class="info-value" id="points">0</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Progreso:</span>
+                        <span class="info-value"><span id="current">0</span>/<span id="total">0</span></span>
+                    </div>
+                </div>
+                <button class="result-btn secondary" onclick="exitGame()">Salir</button>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <div class="game-content" id="gameContent">
+                <!-- Contenido dinámico del juego -->
+            </div>
+        </div>
+    </main>
+
+    <div class="result-modal" id="resultModal">
+        <div class="result-content">
+            <div class="result-icon" id="resultIcon"></div>
+            <h3 class="result-title" id="resultTitle"></h3>
+            <p class="result-message" id="resultMessage"></p>
+            <div class="result-buttons">
+                <button class="result-btn primary" onclick="nextChallenge()">Continuar</button>
+                <button class="result-btn secondary" onclick="exitGame()">Salir</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const signLanguageImages = {
+            'A': 'img/abecedario/a.jpg',
+            'B': 'img/abecedario/b.jpg',
+            'C': 'img/abecedario/c.jpg',
+            'D': 'img/abecedario/d.jpg',
+            'E': 'img/abecedario/e.jpg',
+            'F': 'img/abecedario/f.jpg',
+            'G': 'img/abecedario/g.jpg',
+            'H': 'img/abecedario/h.jpg',
+            'I': 'img/abecedario/i.jpg',
+            'J': 'img/abecedario/j.jpg',
+            'K': 'img/abecedario/k.jpg',
+            'L': 'img/abecedario/l.jpg',
+            'M': 'img/abecedario/m.jpg',
+            'N': 'img/abecedario/n.jpg',
+            'Ñ': 'img/abecedario/nn.jpg',
+            'O': 'img/abecedario/o.jpg',
+            'P': 'img/abecedario/p.jpg',
+            'Q': 'img/abecedario/q.jpg',
+            'R': 'img/abecedario/r.jpg',
+            'S': 'img/abecedario/s.jpg',
+            'T': 'img/abecedario/t.jpg',
+            'U': 'img/abecedario/u.jpg',
+            'V': 'img/abecedario/v.jpg',
+            'W': 'img/abecedario/w.jpg',
+            'X': 'img/abecedario/x.jpg',
+            'Y': 'img/abecedario/y.jpg',
+            'Z': 'img/abecedario/z.jpg'
+        };
+
+        const levelData = {
+            easy: {
+                letters: ['A', 'B', 'C', 'D', 'E'],
+                words: ['BEBE', 'CABE', 'DEDO'],
+                name: 'Fácil 🌱'
+            },
+            medium: {
+                letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
+                words: ['CAFE', 'GATO', 'CASA', 'FOCA'],
+                name: 'Medio 🔥'
+            },
+            hard: {
+                letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],
+                words: ['JUEGO', 'IDEA', 'FELIZ', 'BAILE'],
+                name: 'Difícil ⚡'
+            }
+        };
+
+        let currentGameLevel = null;
+        let currentPhase = 'learning';
+        let currentStep = 0;
+        let gamePoints = 0;
+        let lives = 5;
+        let learningLetters = [];
+        let quizData = [];
+
+        function startLevel(level) {
+            currentGameLevel = level;
+            currentPhase = 'learning';
+            currentStep = 0;
+            gamePoints = 0;
+            learningLetters = levelData[level].letters;
+
+            console.log('Iniciando nivel:', level);
+            console.log('Letras a aprender:', learningLetters);
+
+            const levelSelection = document.getElementById('levelSelection');
+            const gameContainer = document.getElementById('gameContainer');
+            
+            levelSelection.style.display = 'none';
+            gameContainer.style.display = 'block';
+            
+            document.getElementById('currentLevel').textContent = levelData[level].name;
+            document.getElementById('points').textContent = gamePoints;
+            document.getElementById('current').textContent = '1';
+            document.getElementById('total').textContent = learningLetters.length;
+
+            updateProgress();
+            
+            setTimeout(() => {
+                showLearningPhase();
+            }, 100);
+        }
+
+        function showLearningPhase() {
+            if (currentStep >= learningLetters.length) {
+                startQuizPhase();
+                return;
+            }
+
+            const letter = learningLetters[currentStep];
+            const content = document.getElementById('gameContent');
+            const imagePath = signLanguageImages[letter];
+            
+            content.innerHTML = `
+                <div class="learning-mode">
+                    <h3 class="learning-title">📚 Aprendamos la letra "${letter}"</h3>
+                    <div class="letter-display">
+                        <img src="${imagePath}" alt="Letra ${letter}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#f0f0f0;font-size:5rem;\\'>${letter}</div>'">
+                    </div>
+                    <div class="letter-label">Letra "${letter}"</div>
+                    <p class="learning-text">Esta es la seña para la letra <strong>${letter}</strong>. Observa bien la posición de la mano y memorízala.</p>
+                    <button class="continue-btn" onclick="nextLearning()">Continuar ➡️</button>
+                </div>
+            `;
+            
+            console.log('Mostrando letra:', letter, 'Imagen:', imagePath);
+        }
+
+        function nextLearning() {
+            currentStep++;
+            updateProgress();
+            showLearningPhase();
+        }
+
+        function startQuizPhase() {
+            currentPhase = 'quiz';
+            currentStep = 0;
+            showQuizQuestion();
+        }
+
+        function showQuizQuestion() {
+            const totalQuestions = learningLetters.length + 2;
+            
+            if (currentStep >= totalQuestions) {
+                showLevelComplete();
+                return;
+            }
+
+            if (currentStep < learningLetters.length) {
+                showLetterQuiz();
+            } else {
+                showWordQuiz();
+            }
+        }
+
+        function showLetterQuiz() {
+            const letter = learningLetters[currentStep];
+            const wrongOptions = learningLetters.filter(l => l !== letter);
+            const shuffledWrong = wrongOptions.sort(() => Math.random() - 0.5).slice(0, 3);
+            const options = [letter, ...shuffledWrong].sort(() => Math.random() - 0.5);
+            const imagePath = signLanguageImages[letter];
+
+            const content = document.getElementById('gameContent');
+            content.innerHTML = `
+                <div class="quiz-mode">
+                    <h3 class="quiz-question">¿Qué letra es esta seña?</h3>
+                    <div class="quiz-image">
+                        <img src="${imagePath}" alt="Seña misteriosa" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#f0f0f0;font-size:4rem;\\'>🤟</div>'">
+                    </div>
+                    <div class="options-grid">
+                        ${options.map(opt => `
+                            <button class="option-btn" onclick="checkAnswer('${opt}', '${letter}')">${opt}</button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            console.log('Quiz de letra:', letter, 'Opciones:', options);
+        }
+
+        function showWordQuiz() {
+            const words = levelData[currentGameLevel].words;
+            const randomWord = words[Math.floor(Math.random() * words.length)];
+            
+            const content = document.getElementById('gameContent');
+            const sequenceHTML = randomWord.split('').map(letter => {
+                const imagePath = signLanguageImages[letter];
+                return `
+                    <div class="sequence-card">
+                        <img src="${imagePath}" alt="Seña ${letter}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:80px;display:flex;align-items:center;justify-content:center;background:#f0f0f0;font-size:2rem;\\'>🤟</div><div class=\\'sequence-label\\'>?</div>'">
+                        <div class="sequence-label">?</div>
+                    </div>
+                `;
+            }).join('');
+            
+            content.innerHTML = `
+                <div class="sequence-quiz">
+                    <h3 class="quiz-question">¿Qué palabra forman estas señas?</h3>
+                    <div class="sequence-display">
+                        ${sequenceHTML}
+                    </div>
+                    <input type="text" class="word-input" id="wordInput" placeholder="Escribe la palabra..." maxlength="20">
+                    <button class="submit-btn" onclick="checkWord('${randomWord}')">Verificar Respuesta ✓</button>
+                </div>
+            `;
+
+            setTimeout(() => {
+                const input = document.getElementById('wordInput');
+                if (input) {
+                    input.focus();
+                    input.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            checkWord(randomWord);
+                        }
+                    });
+                }
+            }, 100);
+            
+            console.log('Palabra a adivinar:', randomWord);
+        }
+
+        function checkAnswer(selected, correct) {
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === correct) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === selected && selected !== correct) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            if (selected === correct) {
+                gamePoints += 10;
+                document.getElementById('points').textContent = gamePoints;
+                setTimeout(() => {
+                    showResultModal(true, `¡Correcto! La seña corresponde a la letra "${correct}"`);
+                }, 1000);
+            } else {
+                lives--;
+                updateLives();
+                setTimeout(() => {
+                    showResultModal(false, `Incorrecto. La respuesta correcta era "${correct}"`);
+                }, 1000);
+            }
+        }
+
+        function checkWord(correctWord) {
+            const input = document.getElementById('wordInput');
+            const userAnswer = input.value.toUpperCase().trim();
+
+            if (userAnswer === correctWord) {
+                gamePoints += 20;
+                document.getElementById('points').textContent = gamePoints;
+                input.style.borderColor = '#2ecc71';
+                setTimeout(() => {
+                    showResultModal(true, `¡Excelente! La palabra era "${correctWord}"`);
+                }, 500);
+            } else {
+                lives--;
+                updateLives();
+                input.style.borderColor = '#e74c3c';
+                input.classList.add('incorrect');
+                setTimeout(() => {
+                    showResultModal(false, `La palabra correcta era "${correctWord}"`);
+                }, 500);
+            }
+        }
+
+        function showResultModal(isCorrect, message) {
+            const modal = document.getElementById('resultModal');
+            const icon = document.getElementById('resultIcon');
+            const title = document.getElementById('resultTitle');
+            const msg = document.getElementById('resultMessage');
+
+            if (isCorrect) {
+                icon.textContent = '🎉';
+                title.textContent = '¡Correcto!';
+                title.style.color = '#2ecc71';
+            } else {
+                icon.textContent = '😔';
+                title.textContent = 'Incorrecto';
+                title.style.color = '#e74c3c';
+            }
+
+            msg.textContent = message;
+            modal.style.display = 'flex';
+
+            if (lives <= 0) {
+                setTimeout(() => {
+                    showGameOver();
+                }, 2000);
+            }
+        }
+
+        function nextChallenge() {
+            const modal = document.getElementById('resultModal');
+            modal.style.display = 'none';
+
+            if (lives <= 0) {
+                showGameOver();
+                return;
+            }
+
+            currentStep++;
+            updateProgress();
+            showQuizQuestion();
+        }
+
+        function showLevelComplete() {
+            const content = document.getElementById('gameContent');
+            content.innerHTML = `
+                <div class="learning-mode">
+                    <div class="result-icon" style="font-size: 6rem;">🏆</div>
+                    <h3 class="learning-title">¡Nivel Completado!</h3>
+                    <p class="learning-text">Has terminado el nivel ${levelData[currentGameLevel].name}</p>
+                    <div class="level-stats" style="max-width: 400px; margin: 30px auto;">
+                        <div class="stat">
+                            <div class="stat-value">${gamePoints}</div>
+                            <div class="stat-label">Puntos Totales</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${lives}</div>
+                            <div class="stat-label">Vidas Restantes</div>
+                        </div>
+                    </div>
+                    <div class="result-buttons" style="margin-top: 30px;">
+                        <button class="result-btn primary" onclick="exitGame()">Volver al Menú</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showGameOver() {
+            const content = document.getElementById('gameContent');
+            content.innerHTML = `
+                <div class="learning-mode">
+                    <div class="result-icon" style="font-size: 6rem;">💔</div>
+                    <h3 class="learning-title">Game Over</h3>
+                    <p class="learning-text">Te has quedado sin vidas. ¡No te rindas!</p>
+                    <div class="level-stats" style="max-width: 400px; margin: 30px auto;">
+                        <div class="stat">
+                            <div class="stat-value">${gamePoints}</div>
+                            <div class="stat-label">Puntos Obtenidos</div>
+                        </div>
+                    </div>
+                    <div class="result-buttons" style="margin-top: 30px;">
+                        <a href="vidas.html" class="result-btn primary" style="text-decoration: none; display: inline-block;">
+                            Conseguir Vidas ❤️
+                        </a>
+                        <button class="result-btn secondary" onclick="exitGame()">Volver al Menú</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function exitGame() {
+            const modal = document.getElementById('resultModal');
+            const gameContainer = document.getElementById('gameContainer');
+            const levelSelection = document.getElementById('levelSelection');
+            
+            modal.style.display = 'none';
+            gameContainer.style.display = 'none';
+            levelSelection.style.display = 'block';
+            
+            currentGameLevel = null;
+            currentStep = 0;
+            gamePoints = 0;
+            
+            lives = 5;
+            updateLives();
+        }
+
+        function updateProgress() {
+            const total = currentPhase === 'learning' ? 
+                learningLetters.length : 
+                learningLetters.length + 2;
+            
+            document.getElementById('current').textContent = currentStep + 1;
+            document.getElementById('total').textContent = total;
+            
+            const percentage = ((currentStep + 1) / total) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+        }
+
+        function updateLives() {
+            document.getElementById('livesCount').textContent = lives;
+            
+            if (lives <= 2) {
+                document.querySelector('.heart-icon').style.color = '#e74c3c';
+                document.querySelector('.heart-icon').style.animation = 'heartbeat 0.5s infinite';
+            }
+
+            if (lives <= 0) {
+                showNotification('❌ ¡Te has quedado sin vidas!');
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(45deg, #D1A68B, #c19a7a);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                z-index: 1000;
+                animation: slideInRight 0.3s ease-out;
+                font-weight: bold;
+                max-width: 300px;
+            `;
+            notification.textContent = message;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideInRight {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            
+            if (!document.getElementById('notification-styles')) {
+                style.id = 'notification-styles';
+                document.head.appendChild(style);
+            }
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideInRight 0.3s ease-out reverse';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particle.style.animationDuration = (Math.random() * 5 + 8) + 's';
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 10000);
+        }
+
+        setInterval(createParticle, 5000);
+
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.animation = 'fadeIn 1s ease-out forwards';
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    to { opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+
+        document.getElementById('resultModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
