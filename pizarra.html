@@ -3,65 +3,747 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pizarra Educativa</title>
-    <link rel="stylesheet" href="pizarra.css">
+    <title>Clases Personalizadas - Signo Translate</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #D1A68B 0%, #c19a7a 25%, #b8926f 50%, #af8a64 75%, #a68259 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .back-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
+        }
+
+        .header-content {
+            flex: 1;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1rem;
+        }
+
+        .main-container {
+            flex: 1;
+            padding: 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .intro-section {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .intro-section h2 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 15px;
+        }
+
+        .intro-section p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 10px 25px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+            margin-top: 40px;
+        }
+
+        .video-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s ease;
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+        }
+
+        .video-card:nth-child(1) { animation-delay: 0.1s; }
+        .video-card:nth-child(2) { animation-delay: 0.2s; }
+        .video-card:nth-child(3) { animation-delay: 0.3s; }
+        .video-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .video-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #D1A68B, #c19a7a, #b8926f);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .video-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
+            opacity: 1;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .video-wrapper:hover .play-overlay {
+            opacity: 0;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #D1A68B;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .video-wrapper:hover .play-button {
+            transform: scale(1.1);
+            background: white;
+        }
+
+        .video-info {
+            padding: 25px;
+        }
+
+        .video-category {
+            display: inline-block;
+            background: linear-gradient(45deg, #D1A68B, #c19a7a);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            box-shadow: 0 3px 10px rgba(209, 166, 139, 0.3);
+        }
+
+        .video-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .video-description {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .video-meta {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            padding-top: 15px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .meta-item .icon {
+            font-size: 1.1rem;
+        }
+
+        .video-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .control-button {
+            flex: 1;
+            padding: 12px 20px;
+            background: linear-gradient(45deg, #D1A68B, #c19a7a);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(209, 166, 139, 0.3);
+            font-size: 0.9rem;
+        }
+
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(209, 166, 139, 0.4);
+        }
+
+        .control-button.secondary {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+        }
+
+        .control-button.secondary:hover {
+            box-shadow: 0 8px 20px rgba(149, 165, 166, 0.4);
+        }
+
+        .particle {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: float 10s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg); 
+                opacity: 0.4; 
+            }
+            50% { 
+                transform: translateY(-30px) rotate(180deg); 
+                opacity: 0.8; 
+            }
+        }
+
+        .fullscreen-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .fullscreen-modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-video {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: #f0f0f0;
+            transform: rotate(90deg);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .intro-section h2 {
+                font-size: 2rem;
+            }
+
+            .intro-section p {
+                font-size: 1rem;
+            }
+
+            .videos-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .video-title {
+                font-size: 1.3rem;
+            }
+
+            .video-controls {
+                flex-direction: column;
+            }
+
+            .main-container {
+                padding: 30px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 12px 15px;
+            }
+
+            .intro-section h2 {
+                font-size: 1.7rem;
+            }
+
+            .video-info {
+                padding: 20px;
+            }
+
+            .play-button {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="particle" style="top: 15%; left: 8%; animation-delay: 0s;"></div>
+    <div class="particle" style="top: 65%; left: 85%; animation-delay: 2s;"></div>
+    <div class="particle" style="top: 35%; left: 45%; animation-delay: 4s;"></div>
+    <div class="particle" style="top: 75%; left: 15%; animation-delay: 1s;"></div>
+    <div class="particle" style="top: 25%; left: 75%; animation-delay: 3s;"></div>
+    <div class="particle" style="top: 50%; left: 90%; animation-delay: 5s;"></div>
 
-    <!-- Encabezado de la pizarra -->
-    <header>
-        <h1>Pizarra Educativa</h1>
-        <p>Clases Personalizadas</p>
+    <header class="header">
+        <a class="back-button" href="inicio.html">←</a>
+        <div class="header-content">
+            <h1>📚 Clases Personalizadas</h1>
+            <p>Aprende lenguaje de señas con nuestros videos educativos</p>
+        </div>
     </header>
 
-    <!-- Contenedor principal -->
-    <main>
+    <main class="main-container">
+        <div class="intro-section">
+            <h2>🎬 Videos Educativos</h2>
+            <p>Explora nuestra colección de videos diseñados para facilitar tu aprendizaje del lenguaje de señas. Cada lección está cuidadosamente creada para ofrecerte la mejor experiencia educativa.</p>
+            <span class="badge">📹 4 videos disponibles por el momento</span>
+        </div>
 
-        <!-- Clase Abecedario -->
-        <section id="abecedario" class="clase">
-            <h2>Clase de Abecedario</h2>
-            <p>Aprende el abecedario de una manera divertida.</p>
-            <video controls width="640" height="360">
-                <source src="videos/abecedario.mp4" type="video/mp4">
-                Tu navegador no soporta el video.
-            </video>
-        </section>
+        <div class="videos-grid">
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <video id="video-1" src="videos/abecedario.mp4" preload="metadata"></video>
+                    <div class="play-overlay">
+                        <div class="play-button">▶</div>
+                    </div>
+                </div>
+                <div class="video-info">
+                    <span class="video-category">🔤 Básico</span>
+                    <h3 class="video-title">Abecedario en Señas</h3>
+                    <p class="video-description">Aprende el alfabeto completo en lenguaje de señas. Este es el primer paso fundamental para comenzar tu viaje en la comunicación con señas.</p>
+                    <div class="video-meta">
+                        <div class="meta-item">
+                            <span class="icon">⏱️</span>
+                            <span>Lección básica</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="icon">🎯</span>
+                            <span>Nivel: Principiante</span>
+                        </div>
+                    </div>
+                    <div class="video-controls">
+                        <button class="control-button" onclick="playVideo('video-1')">▶ Ver Video</button>
+                        <button class="control-button secondary" onclick="openFullscreen('video-1')">⛶ Pantalla Completa</button>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Clase Números -->
-        <section id="familia" class="clase">
-            <h2>Clase de Miembros de la Familia</h2>
-            <p>Aprende los miembros de la familia básicos.</p>
-            <video controls width="640" height="360">
-                <source src="videos/familia.mp4" type="video/mp4">
-                Tu navegador no soporta el video.
-            </video>
-        </section>
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <video id="video-2" src="videos/familia.mp4" preload="metadata"></video>
+                    <div class="play-overlay">
+                        <div class="play-button">▶</div>
+                    </div>
+                </div>
+                <div class="video-info">
+                    <span class="video-category">👨‍👩‍👧‍👦 Vocabulario</span>
+                    <h3 class="video-title">La Familia</h3>
+                    <p class="video-description">Descubre las señas para referirte a los miembros de tu familia. Vocabulario esencial para conversaciones cotidianas sobre tus seres queridos.</p>
+                    <div class="video-meta">
+                        <div class="meta-item">
+                            <span class="icon">⏱️</span>
+                            <span>Vocabulario temático</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="icon">🎯</span>
+                            <span>Nivel: Principiante</span>
+                        </div>
+                    </div>
+                    <div class="video-controls">
+                        <button class="control-button" onclick="playVideo('video-2')">▶ Ver Video</button>
+                        <button class="control-button secondary" onclick="openFullscreen('video-2')">⛶ Pantalla Completa</button>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Clase Colores -->
-        <section id="personal" class="clase">
-            <h2>Clase de Presentación Personal</h2>
-            <p>Aprende la presentación personal básica.</p>
-            <video controls width="640" height="360">
-                <source src="videos/personal.mp4" type="video/mp4">
-                Tu navegador no soporta el video.
-            </video>
-        </section>
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <video id="video-3" src="videos/personal.mp4" preload="metadata"></video>
+                    <div class="play-overlay">
+                        <div class="play-button">▶</div>
+                    </div>
+                </div>
+                <div class="video-info">
+                    <span class="video-category">👤 Identidad</span>
+                    <h3 class="video-title">Información Personal</h3>
+                    <p class="video-description">Aprende a expresar información sobre ti mismo: nombre, edad, profesión y más. Ideal para presentarte en lenguaje de señas.</p>
+                    <div class="video-meta">
+                        <div class="meta-item">
+                            <span class="icon">⏱️</span>
+                            <span>Conversación básica</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="icon">🎯</span>
+                            <span>Nivel: Intermedio</span>
+                        </div>
+                    </div>
+                    <div class="video-controls">
+                        <button class="control-button" onclick="playVideo('video-3')">▶ Ver Video</button>
+                        <button class="control-button secondary" onclick="openFullscreen('video-3')">⛶ Pantalla Completa</button>
+                    </div>
+                </div>
+            </div>
 
-        <section id="saludos" class="clase">
-            <h2>Clase de Saludos</h2>
-            <p>Aprende a saludar en lenguaje de señas.</p>
-            <video controls width="640" height="360">
-                <source src="videos/saludos.mp4" type="video/mp4">
-                Tu navegador no soporta el video.
-            </video>
-        </section>
-
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <video id="video-4" src="videos/saludos.mp4" preload="metadata"></video>
+                    <div class="play-overlay">
+                        <div class="play-button">▶</div>
+                    </div>
+                </div>
+                <div class="video-info">
+                    <span class="video-category">👋 Interacción</span>
+                    <h3 class="video-title">Saludos y Despedidas</h3>
+                    <p class="video-description">Las señas más importantes para iniciar y finalizar una conversación. Aprende a saludar y despedirte de forma amigable.</p>
+                    <div class="video-meta">
+                        <div class="meta-item">
+                            <span class="icon">⏱️</span>
+                            <span>Frases comunes</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="icon">🎯</span>
+                            <span>Nivel: Principiante</span>
+                        </div>
+                    </div>
+                    <div class="video-controls">
+                        <button class="control-button" onclick="playVideo('video-4')">▶ Ver Video</button>
+                        <button class="control-button secondary" onclick="openFullscreen('video-4')">⛶ Pantalla Completa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
-    <!-- Botón para regresar al inicio -->
-    <footer>
-        <a href="inicio.html" class="btn-volver">Volver al inicio</a>
-    </footer>
+    <div class="fullscreen-modal" id="fullscreenModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeFullscreen()">✕</button>
+            <video id="modalVideo" class="modal-video" controls></video>
+        </div>
+    </div>
 
+    <script>
+        function playVideo(videoId) {
+            const video = document.getElementById(videoId);
+            
+            if (video.paused) {
+                pauseAllVideos();
+                video.play();
+                showNotification('▶ Reproduciendo video');
+            } else {
+                video.pause();
+                showNotification('⏸ Video pausado');
+            }
+        }
+
+        function pauseAllVideos() {
+            document.querySelectorAll('video').forEach(video => {
+                if (!video.paused) {
+                    video.pause();
+                }
+            });
+        }
+
+        function openFullscreen(videoId) {
+            const video = document.getElementById(videoId);
+            const modal = document.getElementById('fullscreenModal');
+            const modalVideo = document.getElementById('modalVideo');
+            
+            pauseAllVideos();
+            
+            modalVideo.src = video.src;
+            modalVideo.currentTime = video.currentTime;
+            modal.classList.add('active');
+            modalVideo.play();
+        }
+
+        function closeFullscreen() {
+            const modal = document.getElementById('fullscreenModal');
+            const modalVideo = document.getElementById('modalVideo');
+            
+            modalVideo.pause();
+            modalVideo.src = '';
+            modal.classList.remove('active');
+        }
+
+        document.getElementById('fullscreenModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeFullscreen();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeFullscreen();
+            }
+        });
+
+        document.querySelectorAll('.video-wrapper').forEach((wrapper, index) => {
+            const video = wrapper.querySelector('video');
+            
+            wrapper.addEventListener('click', function() {
+                playVideo(video.id);
+            });
+
+            video.addEventListener('play', function() {
+                wrapper.querySelector('.play-overlay').style.opacity = '0';
+            });
+
+            video.addEventListener('pause', function() {
+                wrapper.querySelector('.play-overlay').style.opacity = '1';
+            });
+        });
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(45deg, #D1A68B, #c19a7a);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                z-index: 1000;
+                animation: slideInRight 0.3s ease-out;
+                font-weight: bold;
+                max-width: 300px;
+            `;
+            notification.textContent = message;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideInRight {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            
+            if (!document.getElementById('notification-styles')) {
+                style.id = 'notification-styles';
+                document.head.appendChild(style);
+            }
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideInRight 0.3s ease-out reverse';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 2500);
+        }
+
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particle.style.animationDuration = (Math.random() * 5 + 8) + 's';
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 10000);
+        }
+
+        setInterval(createParticle, 5000);
+
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.animation = 'fadeIn 1s ease-out forwards';
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    to { opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
 </body>
 </html>
