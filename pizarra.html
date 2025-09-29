@@ -188,51 +188,13 @@
             overflow: hidden;
         }
 
-        .video-wrapper video {
+        .video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-        }
-
-        .play-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.3);
-            opacity: 1;
-            transition: all 0.3s ease;
-            pointer-events: none;
-        }
-
-        .video-wrapper:hover .play-overlay {
-            opacity: 0;
-        }
-
-        .play-button {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: #D1A68B;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .video-wrapper:hover .play-button {
-            transform: scale(1.1);
-            background: white;
+            border: none;
         }
 
         .video-info {
@@ -342,68 +304,25 @@
             }
         }
 
-        .fullscreen-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .fullscreen-modal.active {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            position: relative;
-            width: 90%;
-            max-width: 1200px;
-            animation: scaleIn 0.3s ease-out;
-        }
-
-        @keyframes scaleIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-video {
-            width: 100%;
+        .edit-mode-notice {
+            background: rgba(52, 152, 219, 0.95);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 30px;
             border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 0.8s ease-out;
         }
 
-        .close-modal {
-            position: absolute;
-            top: -50px;
-            right: 0;
-            background: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
+        .edit-mode-notice strong {
+            font-size: 1.1rem;
         }
 
-        .close-modal:hover {
-            background: #f0f0f0;
-            transform: rotate(90deg);
+        .edit-mode-notice p {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            opacity: 0.95;
         }
 
         @media (max-width: 768px) {
@@ -449,12 +368,6 @@
             .video-info {
                 padding: 20px;
             }
-
-            .play-button {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
-            }
         }
     </style>
 </head>
@@ -475,6 +388,11 @@
     </header>
 
     <main class="main-container">
+        <div class="edit-mode-notice">
+            <strong>📝 Instrucciones para Editar los Videos</strong>
+            <p>Reemplaza "TU_VIDEO_ID_AQUI" con el ID de tus videos de YouTube. Ejemplo: si tu video es https://www.youtube.com/watch?v=ABC123, usa solo "ABC123"</p>
+        </div>
+
         <div class="intro-section">
             <h2>🎬 Videos Educativos</h2>
             <p>Explora nuestra colección de videos diseñados para facilitar tu aprendizaje del lenguaje de señas. Cada lección está cuidadosamente creada para ofrecerte la mejor experiencia educativa.</p>
@@ -482,12 +400,10 @@
         </div>
 
         <div class="videos-grid">
+            <!-- Video 1: Abecedario -->
             <div class="video-card">
                 <div class="video-wrapper">
-                    <video id="video-1" src="videos/abecedario.mp4" preload="metadata"></video>
-                    <div class="play-overlay">
-                        <div class="play-button">▶</div>
-                    </div>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/SKeBZpjWTko?si=fWNXmtbBrREtnekD&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
                 <div class="video-info">
                     <span class="video-category">🔤 Básico</span>
@@ -504,18 +420,19 @@
                         </div>
                     </div>
                     <div class="video-controls">
-                        <button class="control-button" onclick="playVideo('video-1')">▶ Ver Video</button>
-                        <button class="control-button secondary" onclick="openFullscreen('video-1')">⛶ Pantalla Completa</button>
+                        <a href="https://www.youtube.com/watch?v=SKeBZpjWTko" target="_blank" class="control-button" style="text-decoration: none; text-align: center;">
+                            🔗 Ver en YouTube
+                        </a>
                     </div>
                 </div>
             </div>
 
+            <!-- Video 2: Familia -->
             <div class="video-card">
                 <div class="video-wrapper">
-                    <video id="video-2" src="videos/familia.mp4" preload="metadata"></video>
-                    <div class="play-overlay">
-                        <div class="play-button">▶</div>
-                    </div>
+                    <iframe 
+ width="560" height="315" src="https://www.youtube.com/embed/Bc1NxbjWW_g?si=mep9mC7xYwg1eKzO&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                    </iframe>
                 </div>
                 <div class="video-info">
                     <span class="video-category">👨‍👩‍👧‍👦 Vocabulario</span>
@@ -532,18 +449,17 @@
                         </div>
                     </div>
                     <div class="video-controls">
-                        <button class="control-button" onclick="playVideo('video-2')">▶ Ver Video</button>
-                        <button class="control-button secondary" onclick="openFullscreen('video-2')">⛶ Pantalla Completa</button>
+                        <a href="https://www.youtube.com/watch?v=Bc1NxbjWW_g" target="_blank" class="control-button" style="text-decoration: none; text-align: center;">
+                            🔗 Ver en YouTube
+                        </a>
                     </div>
                 </div>
             </div>
 
+            <!-- Video 3: Personal -->
             <div class="video-card">
                 <div class="video-wrapper">
-                    <video id="video-3" src="videos/personal.mp4" preload="metadata"></video>
-                    <div class="play-overlay">
-                        <div class="play-button">▶</div>
-                    </div>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mWWsrgrmFBY?si=wMO6o7bUDZUIhTWZ&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
                 <div class="video-info">
                     <span class="video-category">👤 Identidad</span>
@@ -560,18 +476,22 @@
                         </div>
                     </div>
                     <div class="video-controls">
-                        <button class="control-button" onclick="playVideo('video-3')">▶ Ver Video</button>
-                        <button class="control-button secondary" onclick="openFullscreen('video-3')">⛶ Pantalla Completa</button>
+                        <a href="https://www.youtube.com/watch?v=mWWsrgrmFBY" target="_blank" class="control-button" style="text-decoration: none; text-align: center;">
+                            🔗 Ver en YouTube
+                        </a>
                     </div>
                 </div>
             </div>
 
+            <!-- Video 4: Saludos -->
             <div class="video-card">
                 <div class="video-wrapper">
-                    <video id="video-4" src="videos/saludos.mp4" preload="metadata"></video>
-                    <div class="play-overlay">
-                        <div class="play-button">▶</div>
-                    </div>
+                    <iframe 
+                         width="560" height="315" src="https://www.youtube.com/embed/YZAqyIIrwns?si=-C7_ctwFwSAniQ2A&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                        title="Saludos y Despedidas"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
                 </div>
                 <div class="video-info">
                     <span class="video-category">👋 Interacción</span>
@@ -588,93 +508,16 @@
                         </div>
                     </div>
                     <div class="video-controls">
-                        <button class="control-button" onclick="playVideo('video-4')">▶ Ver Video</button>
-                        <button class="control-button secondary" onclick="openFullscreen('video-4')">⛶ Pantalla Completa</button>
+                        <a href="https://www.youtube.com/watch?v=YZAqyIIrwns" target="_blank" class="control-button" style="text-decoration: none; text-align: center;">
+                            🔗 Ver en YouTube
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <div class="fullscreen-modal" id="fullscreenModal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeFullscreen()">✕</button>
-            <video id="modalVideo" class="modal-video" controls></video>
-        </div>
-    </div>
-
     <script>
-        function playVideo(videoId) {
-            const video = document.getElementById(videoId);
-            
-            if (video.paused) {
-                pauseAllVideos();
-                video.play();
-                showNotification('▶ Reproduciendo video');
-            } else {
-                video.pause();
-                showNotification('⏸ Video pausado');
-            }
-        }
-
-        function pauseAllVideos() {
-            document.querySelectorAll('video').forEach(video => {
-                if (!video.paused) {
-                    video.pause();
-                }
-            });
-        }
-
-        function openFullscreen(videoId) {
-            const video = document.getElementById(videoId);
-            const modal = document.getElementById('fullscreenModal');
-            const modalVideo = document.getElementById('modalVideo');
-            
-            pauseAllVideos();
-            
-            modalVideo.src = video.src;
-            modalVideo.currentTime = video.currentTime;
-            modal.classList.add('active');
-            modalVideo.play();
-        }
-
-        function closeFullscreen() {
-            const modal = document.getElementById('fullscreenModal');
-            const modalVideo = document.getElementById('modalVideo');
-            
-            modalVideo.pause();
-            modalVideo.src = '';
-            modal.classList.remove('active');
-        }
-
-        document.getElementById('fullscreenModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeFullscreen();
-            }
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeFullscreen();
-            }
-        });
-
-        document.querySelectorAll('.video-wrapper').forEach((wrapper, index) => {
-            const video = wrapper.querySelector('video');
-            
-            wrapper.addEventListener('click', function() {
-                playVideo(video.id);
-            });
-
-            video.addEventListener('play', function() {
-                wrapper.querySelector('.play-overlay').style.opacity = '0';
-            });
-
-            video.addEventListener('pause', function() {
-                wrapper.querySelector('.play-overlay').style.opacity = '1';
-            });
-        });
-
         function showNotification(message) {
             const notification = document.createElement('div');
             notification.style.cssText = `
