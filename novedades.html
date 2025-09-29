@@ -374,146 +374,6 @@
             50% { transform: scale(1.05); }
         }
 
-        .thanks-section {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 245, 240, 0.95));
-            border-radius: 30px;
-            padding: 50px 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-            animation: fadeInUp 0.8s ease-out 0.5s both;
-            margin-bottom: 30px;
-        }
-
-        .thanks-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .thanks-icon {
-            font-size: 4rem;
-            margin-bottom: 15px;
-            animation: heartbeat 2s infinite;
-        }
-
-        .thanks-header h3 {
-            font-size: 2.5rem;
-            color: #333;
-            font-weight: bold;
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .thanks-subtitle {
-            color: #666;
-            font-size: 1.2rem;
-            font-style: italic;
-        }
-
-        .thanks-grid {
-            display: grid;
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .thanks-card {
-            background: white;
-            border-radius: 20px;
-            padding: 35px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.4s ease;
-            border-left: 5px solid;
-        }
-
-        .thanks-card:hover {
-            transform: translateX(10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-        }
-
-        .thanks-card.partner {
-            border-left-color: #3498db;
-            background: linear-gradient(135deg, white 0%, #ebf5fb 100%);
-        }
-
-        .thanks-card.teachers {
-            border-left-color: #9b59b6;
-            background: linear-gradient(135deg, white 0%, #f4ecf7 100%);
-        }
-
-        .thanks-card.love {
-            border-left-color: #e74c3c;
-            background: linear-gradient(135deg, white 0%, #fadbd8 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .thanks-card.love::before {
-            content: '💕';
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 3rem;
-            opacity: 0.1;
-        }
-
-        .card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-        }
-
-        .thanks-card h4 {
-            font-size: 1.6rem;
-            color: #333;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-
-        .thanks-text {
-            color: #555;
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-
-        .thanks-text strong {
-            color: #333;
-            font-weight: bold;
-        }
-
-        .love-decoration {
-            text-align: center;
-            font-size: 1.5rem;
-            margin-top: 20px;
-            animation: pulse 2s infinite;
-        }
-
-        .signature {
-            text-align: center;
-            margin-top: 40px;
-            position: relative;
-        }
-
-        .signature-line {
-            width: 200px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #D1A68B, transparent);
-            margin: 0 auto 20px;
-        }
-
-        .signature-name {
-            font-size: 1.4rem;
-            color: #333;
-            font-weight: bold;
-            font-style: italic;
-            margin-bottom: 10px;
-        }
-
-        .signature-heart {
-            font-size: 1.5rem;
-            color: #e74c3c;
-            animation: heartbeat 1.5s infinite;
-        }
-
         .particle {
             position: fixed;
             width: 5px;
@@ -605,7 +465,7 @@
 
         <div class="content-section">
             <div class="section-header">
-                <img src="https://via.placeholder.com/100x100/D1A68B/FFFFFF?text=Logo" alt="Logo Instituto Técnico 26 de Marzo" class="section-icon">
+                <img src="img/fotos/escudo.jpg" alt="Logo Instituto Técnico 26 de Marzo" class="section-icon">
                 <div class="section-title">
                     <h3>🏫 Instituto Técnico 26 de Marzo</h3>
                     <p>Nuestra Institución Educativa</p>
@@ -632,67 +492,26 @@
             
             <div class="creators-grid">
                 <div class="creator-card">
-                    <img src="https://via.placeholder.com/150x150/3498db/FFFFFF?text=DCT" alt="Daniel Libardo Torres Calderón" class="creator-photo">
+                    <img src="img/fotos/daniellibardo.jpg" alt="Daniel Libardo Torres Calderón" class="creator-photo">
                     <h4 class="creator-name">Daniel Libardo Torres Calderón</h4>
                     <p class="creator-age">18 años</p>
                     <span class="creator-role">💻 Programador & Líder del Proyecto</span>
                     <p class="creator-description">
                         Desarrollador principal y visionario del proyecto. Responsable de toda la arquitectura técnica, programación y diseño de la aplicación. Su pasión por la tecnología y el compromiso social se unen en Signo Translate.
                     </p>
-                    <a href="#" class="creator-link">Ver Perfil</a>
+                    <a href="https://www.instagram.com/lib.zzzphp" class="creator-link">Ver Perfil</a>
                 </div>
 
                 <div class="creator-card">
-                    <img src="https://via.placeholder.com/150x150/e74c3c/FFFFFF?text=JDGM" alt="Juan Daniel Galeano Marrugo" class="creator-photo">
+                    <img src="img/fotos/juandaniel.jpg" alt="Juan Daniel Galeano Marrugo" class="creator-photo">
                     <h4 class="creator-name">Juan Daniel Galeano Marrugo</h4>
-                    <p class="creator-age">18 años</p>
+                    <p class="creator-age">17 años</p>
                     <span class="creator-role">📊 Investigador & Gestor de Publicidad</span>
                     <p class="creator-description">
                         Encargado de la investigación del lenguaje de señas, estrategias de difusión y gestión de contenido. Su trabajo asegura que Signo Translate llegue a quien más lo necesita y cumpla su misión social.
                     </p>
-                    <a href="#" class="creator-link">Ver Perfil</a>
+                    <a href="https://www.instagram.com/dxnielgxz" class="creator-link">Ver Perfil</a>
                 </div>
-            </div>
-        </div>
-
-        <div class="thanks-section">
-            <div class="thanks-header">
-                <div class="thanks-icon">💝</div>
-                <h3>Agradecimientos</h3>
-                <p class="thanks-subtitle">Palabras desde el corazón</p>
-            </div>
-
-            <div class="thanks-grid">
-                <div class="thanks-card partner">
-                    <div class="card-icon">🤝</div>
-                    <h4>A mi compañero</h4>
-                    <p class="thanks-text">
-                        Quiero agradecer principalmente a mi compañero <strong>Juan Daniel</strong>, quien me ayudó, tal vez no de manera técnica o a programar la aplicación, sino que me acortó mucho tiempo de trabajo con información y todo ese tipo de cosas necesarias para la app.
-                    </p>
-                </div>
-
-                <div class="thanks-card teachers">
-                    <div class="card-icon">👨‍🏫</div>
-                    <h4>A mis profesores</h4>
-                    <p class="thanks-text">
-                        Quiero agradecer a mis profesores <strong>Carlos Alberto Sanabria, Fary Jhoana, Richard Ardila</strong> y <strong>Arturo Contreras</strong>, quienes me apoyaron y confiaron en mi proceso de crear la aplicación.
-                    </p>
-                </div>
-
-                <div class="thanks-card love">
-                    <div class="card-icon">💕</div>
-                    <h4>A mi pareja</h4>
-                    <p class="thanks-text">
-                        Por último, pero no menos importante, darle un agradecimiento especial a mi pareja, quien me dio ánimos en todo el desarrollo de la aplicación. Sin ella esta aplicación tal vez nunca hubiera salido. Muchas gracias de corazón y no sabes cuánto te amo <strong>Valentina Rivera</strong>.
-                    </p>
-                    <div class="love-decoration">❤️✨❤️</div>
-                </div>
-            </div>
-
-            <div class="signature">
-                <div class="signature-line"></div>
-                <p class="signature-name">Daniel Libardo Torres Calderón</p>
-                <div class="signature-heart">♥</div>
             </div>
         </div>
     </main>
