@@ -340,13 +340,14 @@
             </div>
 
             <!-- Juego de Señas -->
-            <div class="feature-card" onclick="navigateTo('game')">
+            <div class="feature-card">
+                
                 <div class="card-icon">🎮</div>
-                <h2 class="card-title">Juego de Señas</h2>
-                <p class="card-description">Diviértete mientras aprendes con nuestros juegos interactivos de lenguaje de señas.</p>
-                <button class="card-button">Jugar Ahora</button>
+                <h2 class="card-title">Juegos Interactivos</h2>
+                <p class="card-description">Aprende jugando con nuestros juegos interactivos.</p>
+                <a href="juegos.html"  class="card-button">Jugar</a>
+                
             </div>
-
             <!-- Novedades -->
             <div class="feature-card" onclick="navigateTo('news')">
                 <div class="card-icon">📰</div>
@@ -369,10 +370,10 @@
             // Aquí puedes cambiar las URLs de destino para cada sección
             const routes = {
                 'keyboard': '/signo/files/teclado.html', // Cambia por la URL real
-                'classes': '#',  // Cambia por la URL real
-                'lives': '#',    // Cambia por la URL real
-                'board': '#',    // Cambia por la URL real
-                'game': '#',     // Cambia por la URL real
+                'classes': 'videos.html',  // Cambia por la URL real
+                'lives': 'vidas.html',    // Cambia por la URL real
+                'board': 'teclado.html',    // Cambia por la URL real
+                'game': 'juegos.html',     // Cambia por la URL real
                 'news': '#'      // Cambia por la URL real
             };
             
@@ -436,4 +437,3 @@
     </script>
 </body>
 </html>
-
